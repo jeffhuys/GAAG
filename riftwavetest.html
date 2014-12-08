@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>RiffWave test</title>
+	<script src="riffwave.js" type="text/javascript"></script>
+</head>
+<body>
+	<script>
+		var audio = new Audio(); // create the HTML5 audio element
+		var wave = new RIFFWAVE(); // create an empty wave file
+		var data = []; // yes, it's an array
+
+		//wave.header.sampleRate = 44100; // set sample rate to 44KHz
+		wave.header.sampleRate = 44100; // set sample rate to 44KHz
+		wave.header.numChannels = 1; // one channels (mono)
+
+		// var i = 0;
+		// var val = 0;
+		// while (i<1000000) {
+		//   if(i % 7500 == 0) {
+		//   	val = Math.random() * 10 + 10;
+		//   	console.log("Tick");
+		//   } 
+
+		//   data[i++] = 128+Math.round(127*Math.sin(i/val));
+		  
+		// }
+
+		
+
+		var i = 0;
+		while(i < 50) {
+			var rand = Math.random();
+			if(rand < 0.3) {
+				data = data.concat(generatePeaks(Math.random() * 15, Math.random() * 20000));
+			} else if(rand > 0.3 && rand < 0.6) {
+				data = data.concat(generateSine(Math.random() * 15, Math.random() * 20000));
+			} else {
+				data = data.concat(generateSquare(Math.random() * 15, Math.random() * 20000));
+			}
+			i++;
+		}
+
+		wave.Make(data); // make the wave file
+		audio.src = wave.dataURI; // set audio source
+		audio.play(); // we should hear two tones one on each speaker
+
+		function generateSine(hertz, length) {
+			var data = [];
+
+			var x = 0;
+			while(x < length) {
+				data[x++] = 128+Math.round(127*Math.sin(x/(hertz)));
+			}
+
+			return data;
+
+		}
+
+		function generateSquare(hertz, length) {
+			var data = [];
+
+			var x = 0;
+			while(x < length) {
+				var val = 128+Math.round(127*Math.sin(x/(hertz)));
+				if(val > 60) val = 128;
+				if(val < 60) val = 0;
+				data[x++] = val;
+			}
+
+			return data;
+		}
+
+		function generatePeaks(hertz, length) {
+			var data = [];
+
+			var x = 0;
+			while(x < length) {
+				data[x++] = (x / (hertz / 10)) % 128;
+			}
+
+			return data;
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+.DNA
+{
+	border: solid 1px #000;
+	margin: 20px;
+}
+
+.generate
+{
+	margin-bottom: 5px;
+}
+
+.chromosome
+{
+	height: 50px;
+	background-color: #000;
+	border: solid 5px #FFF;
+}
+
+.play
+{
+	margin-bottom: 5px;
+}
