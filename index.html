@@ -32,11 +32,11 @@
 		while(i < 50) {
 			var rand = Math.random();
 			if(rand < 0.3) {
-				data = data.concat(generatePeaks(Math.random() * 15, Math.random() * 4000));
+				data = data.concat(generatePeaks(Math.random() * 15, Math.random() * 20000));
 			} else if(rand > 0.3 && rand < 0.6) {
-				data = data.concat(generateSine(Math.random() * 15, Math.random() * 30000));
+				data = data.concat(generateSine(Math.random() * 15, Math.random() * 20000));
 			} else {
-				data = data.concat(generateSquare(Math.random() * 15, Math.random() * 4000));
+				data = data.concat(generateSquare(Math.random() * 15, Math.random() * 20000));
 			}
 			i++;
 		}
