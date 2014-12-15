@@ -7,37 +7,9 @@
 </head>
 <body>
 	<script>
-		var data = []; // yes, it's an array
-
-		var numChromosomes = 4;
-
-		var DNA = {};
-			DNA.id 			= "bla";
-			DNA.chromosomes = [];
-
-		var i = 0;
-		while(i < numChromosomes) {
-			var rand = Math.random();
-
-			var params = {};
-				params.hertz 	= Math.random() * 15;
-				params.length 	= Math.random() * 20000;
-
-			if(rand < 0.3) {
-				DNA.chromosomes[i] = generateChromosome(i, "sine", params);
-			} else if(rand > 0.3 && rand < 0.6) {
-				DNA.chromosomes[i] = generateChromosome(i, "square", params);
-			} else {
-				DNA.chromosomes[i] = generateChromosome(i, "saw", params);
-			}
-			i++;
-		}
-
-		DNA.chromosomes.forEach(function(entry) {
-			data = data.concat(entry.soundData);
-		});
-		
-		play(data);
+		var dna = generateDNA("lol", 4);
+				
+		play(dna.soundData);
 	</script>
 </body>
 </html>

@@ -22,6 +22,39 @@ function generateChromosome(id, type, params) {
 	return chromosome;
 }
 
+function generateDNA(id, numChromosomes) {
+	var DNA = {};
+		DNA.id 			= id;
+		DNA.chromosomes = [];
+
+	var i = 0;
+	while(i < numChromosomes) {
+		var rand = Math.random();
+
+		var params = {};
+			params.hertz 	= Math.random() * 15;
+			params.length 	= Math.random() * 20000;
+
+		if(rand < 0.3) {
+			DNA.chromosomes[i] = generateChromosome(i, "sine", params);
+		} else if(rand > 0.3 && rand < 0.6) {
+			DNA.chromosomes[i] = generateChromosome(i, "square", params);
+		} else {
+			DNA.chromosomes[i] = generateChromosome(i, "saw", params);
+		}
+		i++;
+	}
+
+	var data = [];
+	DNA.chromosomes.forEach(function(entry) {
+		data = data.concat(entry.soundData);
+	});
+
+	DNA.soundData = data;
+
+	return DNA;
+}
+
 function chromosomeSoundData(type, params) {
 	switch(type) {
 		case "sine":
