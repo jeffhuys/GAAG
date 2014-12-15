@@ -6,44 +6,104 @@
 </head>
 <body>
 	<script>
-		var audio = new Audio(); // create the HTML5 audio element
-		var wave = new RIFFWAVE(); // create an empty wave file
+
 		var data = []; // yes, it's an array
 
-		//wave.header.sampleRate = 44100; // set sample rate to 44KHz
-		wave.header.sampleRate = 44100; // set sample rate to 44KHz
-		wave.header.numChannels = 1; // one channels (mono)
 
-		// var i = 0;
-		// var val = 0;
-		// while (i<1000000) {
-		//   if(i % 7500 == 0) {
-		//   	val = Math.random() * 10 + 10;
-		//   	console.log("Tick");
-		//   } 
+		var numChromosomes = 4;
 
-		//   data[i++] = 128+Math.round(127*Math.sin(i/val));
-		  
-		// }
 
-		
+		var DNA = {};
+			DNA.id 			= "bla";
+			DNA.chromosomes = [];
+
 
 		var i = 0;
-		while(i < 50) {
+		while(i < numChromosomes) {
 			var rand = Math.random();
+
+			var params = {};
+				params.hertz 	= Math.random() * 15;
+				params.length 	= Math.random() * 20000;
+
 			if(rand < 0.3) {
-				data = data.concat(generatePeaks(Math.random() * 15, Math.random() * 20000));
+				DNA.chromosomes[i] = generateChromosome(i, "sine", params);
 			} else if(rand > 0.3 && rand < 0.6) {
-				data = data.concat(generateSine(Math.random() * 15, Math.random() * 20000));
+				DNA.chromosomes[i] = generateChromosome(i, "square", params);
 			} else {
-				data = data.concat(generateSquare(Math.random() * 15, Math.random() * 20000));
+				DNA.chromosomes[i] = generateChromosome(i, "saw", params);
 			}
+
 			i++;
 		}
 
-		wave.Make(data); // make the wave file
-		audio.src = wave.dataURI; // set audio source
-		audio.play(); // we should hear two tones one on each speaker
+		// console.dir(DNA);
+
+		DNA.chromosomes.forEach(function(entry) {
+			data = data.concat(entry.soundData);
+		});
+
+		
+		play(data);
+
+
+
+
+		
+
+		function play(data) {
+			var audio = new Audio(); // create the HTML5 audio element
+			var wave = new RIFFWAVE(); // create an empty wave file
+
+			wave.header.sampleRate = 44100; // set sample rate to 44KHz
+			wave.header.numChannels = 1; // one channel (mono)
+
+			wave.Make(data);
+			audio.src = wave.dataURI;
+			audio.play();
+		}
+
+		function generateChromosome(id, type, params) {
+			var chromosome = {};
+
+			chromosome.color 		= chromosomeColor(type);
+			chromosome.soundData 	= chromosomeSoundData(type, params);
+			chromosome.params		= params;
+			chromosome.type 		= type;
+			chromosome.id			= id;
+
+			return chromosome;
+		}
+
+		function chromosomeSoundData(type, params) {
+			switch(type) {
+				case "sine":
+					return generateSine(params.hertz, params.length);
+					break;
+				case "square":
+					return generateSquare(params.hertz, params.length);
+					break;
+				case "saw":
+					return generateSaw(params.hertz, params.length);
+					break;
+			}
+		}
+
+
+		function chromosomeColor(type) {
+			switch(type) {
+				case "sine":
+					return "#59ABE3"; // Blue-ish
+					break;
+				case "square":
+					return "#26A65B"; // Green-ish
+					break;
+				case "saw":
+					return "#F4B350"; // Orange-ish
+					break;
+			}
+		}
+
 
 		function generateSine(hertz, length) {
 			var data = [];
@@ -54,7 +114,6 @@
 			}
 
 			return data;
-
 		}
 
 		function generateSquare(hertz, length) {
@@ -71,7 +130,7 @@
 			return data;
 		}
 
-		function generatePeaks(hertz, length) {
+		function generateSaw(hertz, length) {
 			var data = [];
 
 			var x = 0;
