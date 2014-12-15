@@ -7,9 +7,25 @@
 </head>
 <body>
 	<script>
-		var dna = generateDNA("lol", 4);
-				
-		play(dna.soundData);
+		//var dna = generateDNA("lol", 4);
+
+		// Test shit.
+		var sine 	= generateSine(10, 50000);
+		var saw 	= generateSaw (10, 90000);
+
+		console.dir();
+
+		play(sine);
+
+		setTimeout(function() {
+			play(saw);
+		}, 5000);
+		
+		setTimeout(function() {
+			play(mateAvgRandom(sine,saw, 2000));
+		}, 10000);
+
+		
 	</script>
 </body>
 </html>

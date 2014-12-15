@@ -84,6 +84,44 @@ function chromosomeColor(type) {
 	}
 }
 
+function mateAvg(obj1, obj2) {
+	var matedObj = [];
+	
+	// Check lowest array size
+	var arrSize = Math.min(obj1.length, obj2.length);
+
+	for(var i = 0; i < arrSize; i++) {
+		matedObj[i] = Math.floor((obj1[i] + obj2[i]) / 2);
+	}
+
+	return matedObj;
+}
+
+function mateAvgRandom(obj1, obj2, randomEveryX) {
+	var matedObj = [];
+
+	var rand = Math.random();
+	
+	// Check lowest array size
+	var arrSize = Math.min(obj1.length, obj2.length);
+
+	for(var i = 0; i < arrSize; i++) {
+		if(i % randomEveryX == 0) {
+			var rand = Math.random();
+		}
+
+		if(rand < 0.3) {
+			matedObj[i] = Math.floor((obj1[i] + obj2[i]) / 2);
+		} else if(rand > 0.3 && rand < 0.6) {
+			matedObj[i] = obj1[i];
+		} else {
+			matedObj[i] = obj2[i];
+		}
+	}
+
+	return matedObj;
+}
+
 
 function generateSine(hertz, length) {
 	var data = [];
