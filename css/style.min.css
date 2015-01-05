@@ -18,10 +18,15 @@
 
 .chromosome-play
 {
-	margin-left: 20px;
+	margin-left: 35px;
 }
 
 .dna-play
 {
 	margin-bottom: 5px;
+}
+
+.mutate-radio
+{
+	margin-left: 40px !important;
 }
