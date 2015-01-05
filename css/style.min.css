@@ -1,6 +1,9 @@
 .DNA
 {
-
+	float:none;
+    display:inline-block;
+    white-space:normal;
+    vertical-align:top;
 }
 
 .generate
@@ -29,4 +32,11 @@
 .mutate-radio
 {
 	margin-left: 40px !important;
+}
+
+.DNA-row
+{
+	overflow-x:scroll;
+    overflow-y:hidden;
+    white-space:nowrap;
 }
