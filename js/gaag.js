@@ -158,3 +158,23 @@ function generateSaw(hertz, length) {
 
 	return data;
 }
+
+function generateTriangle(hertz, length) {
+	var data = [];
+
+	var x = 0;
+	var rising = true;
+	var val = 0;
+	while(x < length) {
+		if(rising) {
+			data[x++] = val++;
+			if(val >= 128) rising = false;
+		} else {
+			data[x++] = val--;
+			if(val <= 0) rising = true;
+		}
+	}
+
+	return data;
+
+}
