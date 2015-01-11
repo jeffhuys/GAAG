@@ -1,6 +1,6 @@
 function play(data) {
-	var audio = new Audio(); // create the HTML5 audio element
-	var wave = new RIFFWAVE(); // create an empty wave file
+	var audio = new Audio(); 	// create the HTML5 audio element
+	var wave = new RIFFWAVE(); 	// create an empty wave file
 
 	wave.header.sampleRate = 44100; // set sample rate to 44KHz
 	wave.header.numChannels = 1; // one channel (mono)
@@ -35,12 +35,14 @@ function generateDNA(id, numChromosomes) {
 			params.hertz 	= Math.random() * 15;
 			params.length 	= Math.random() * 20000;
 
-		if(rand < 0.3) {
+		if(rand < 0.2) {
 			DNA.chromosomes[i] = generateChromosome(i, "sine", params);
-		} else if(rand > 0.3 && rand < 0.6) {
+		} else if(rand > 0.2 && rand < 0.4) {
 			DNA.chromosomes[i] = generateChromosome(i, "square", params);
-		} else {
+		} else if(rand > 0.4 && rand < 0.6) {
 			DNA.chromosomes[i] = generateChromosome(i, "saw", params);
+		} else {
+			DNA.chromosomes[i] = generateChromosome(i, "triangle", params);
 		}
 		i++;
 	}
@@ -58,17 +60,19 @@ function generateDNA(id, numChromosomes) {
 function chromosomeSoundData(type, params) {
 	switch(type) {
 		case "sine":
-		return generateSine(params.hertz, params.length);
-		break;
+			return generateSine(params.hertz, params.length);
+			break;
 		case "square":
-		return generateSquare(params.hertz, params.length);
-		break;
+			return generateSquare(params.hertz, params.length);
+			break;
 		case "saw":
-		return generateSaw(params.hertz, params.length);
-		break;
+			return generateSaw(params.hertz, params.length);
+			break;
+		case "triangle":
+			return generateTriangle(params.hertz, params.length);
+			break;
 	}
 }
-
 
 function chromosomeColor(type) {
 	switch(type) {
@@ -81,13 +85,21 @@ function chromosomeColor(type) {
 		case "saw":
 			return "#F4B350"; // Orange-ish
 			break;
+		case "triangle":
+			return "#AEA8D3"; // Purplish
+			break;
 	}
 }
+
+/*
+	Data mating functions
+*/
 
 function mateAvg(obj1, obj2) {
 	var matedObj = [];
 	
-	// Check lowest array size
+	// 	Check lowest array size. This ensures we don't
+	//	work with null values (index out of bounds).
 	var arrSize = Math.min(obj1.length, obj2.length);
 
 	for(var i = 0; i < arrSize; i++) {
@@ -102,7 +114,8 @@ function mateAvgRandom(obj1, obj2, randomEveryX) {
 
 	var rand = Math.random();
 	
-	// Check lowest array size
+	// 	Check lowest array size. This ensures we don't
+	//	work with null values (index out of bounds).
 	var arrSize = Math.min(obj1.length, obj2.length);
 
 	for(var i = 0; i < arrSize; i++) {
@@ -122,6 +135,9 @@ function mateAvgRandom(obj1, obj2, randomEveryX) {
 	return matedObj;
 }
 
+/*
+	Waveform generation functions
+*/
 
 function generateSine(hertz, length) {
 	var data = [];
@@ -176,5 +192,4 @@ function generateTriangle(hertz, length) {
 	}
 
 	return data;
-
 }
