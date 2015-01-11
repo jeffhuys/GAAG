@@ -1,3 +1,7 @@
+// Maybe this function is overkill? We create a new audio element,
+// a new RiffWave object... We could create a singleton from the
+// RiffWave object to save RAM (which probably fills up pretty
+// fast at the moment), and increase speed on slower machines.
 function play(data) {
 	var audio = new Audio(); 	// create the HTML5 audio element
 	var wave = new RIFFWAVE(); 	// create an empty wave file
@@ -28,6 +32,9 @@ function generateDNA(id, numChromosomes) {
 		DNA.chromosomes = [];
 
 	var i = 0;
+
+	// Generate chromosomes based on randomness
+	// This should be the initial DNA strain
 	while(i < numChromosomes) {
 		var rand = Math.random();
 
@@ -47,6 +54,7 @@ function generateDNA(id, numChromosomes) {
 		i++;
 	}
 
+	// Add all of the data together to pass through riffwave
 	var data = [];
 	DNA.chromosomes.forEach(function(entry) {
 		data = data.concat(entry.soundData);
