@@ -14,6 +14,19 @@ function play(data) {
 	audio.play();
 }
 
+
+function download(data) {
+	var audio = new Audio(); 	// create the HTML5 audio element
+	var wave = new RIFFWAVE(); 	// create an empty wave file
+
+	wave.header.sampleRate = 44100; // set sample rate to 44KHz
+	wave.header.numChannels = 1; // one channel (mono)
+
+	wave.Make(data);
+	audio.src = wave.dataURI;
+	return audio.src;
+}
+
 function generateChromosome(id, type, params) {
 	var chromosome = {};
 
