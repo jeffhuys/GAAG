@@ -191,10 +191,10 @@ function generateTriangle(hertz, length) {
 	var val = 0;
 	while(x < length) {
 		if(rising) {
-			data[x++] = val++;
+			data[x++] = val+=hertz;
 			if(val >= 128) rising = false;
 		} else {
-			data[x++] = val--;
+			data[x++] = val-=hertz;
 			if(val <= 0) rising = true;
 		}
 	}
