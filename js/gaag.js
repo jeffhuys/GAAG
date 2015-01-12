@@ -124,7 +124,9 @@ function mateAvg(obj1, obj2) {
 	var arrSize = Math.min(obj1.length, obj2.length);
 
 	for(var i = 0; i < arrSize; i++) {
-		matedObj[i] = Math.floor((obj1[i] + obj2[i]) / 2);
+		if(obj1[i] != undefined && obj2[i] != undefined) {
+			matedObj[i] = Math.floor((obj1[i] + obj2[i]) / 2);
+		}
 	}
 
 	return matedObj;
@@ -225,9 +227,15 @@ function handleChromosomeArray(array) {
 	array.forEach(function(chromosome, iterator) {
 		console.log("Iterator: " + iterator);
 
-		var newChromosome = mutateChromosome(chromosome, 10);
-			newChromosome.id = iterator;
-			newChromosome.DNAID = parseInt(chromosome.DNAID) + 1;
+		if(chromosome.option == "2") {
+			// Mutate!
+			var newChromosome = mutateChromosome(chromosome, 4);
+				newChromosome.id = iterator;
+				newChromosome.DNAID = parseInt(chromosome.DNAID) + 1;
+		} else {
+			// Save
+			var newChromosome = chromosome;
+		}
 
 		newChromosomeArray.push(newChromosome);
 		latestID = iterator;
@@ -253,16 +261,34 @@ function handleChromosomeArray(array) {
 }
 
 function mutateChromosome(chromosome, mutationRate) {
-	var newSoundData = [];
-	chromosome.soundData.split(',').forEach(function(data, i) {
-		var randVal = ((Math.random() * mutationRate) - (mutationRate / 2));
-		newSoundData.push(parseInt(data) + randVal);
-	});
-	chromosome.soundData = newSoundData;
-	console.log(chromosome);
+	var oldSoundDataArray = chromosome.soundData.split(',');
+
+	var rand = Math.random();
+	var fitCount = parseInt(oldSoundDataArray.length) + 2;
+	chromosome.soundData = interpolateArray(oldSoundDataArray, fitCount);
 
 	return chromosome;
 }
+
+function interpolateArray(data, fitCount) {
+
+    var linearInterpolate = function (before, after, atPoint) {
+        return before + (after - before) * atPoint;
+    };
+
+    var newData = new Array();
+    var springFactor = new Number((data.length - 1) / (fitCount - 1));
+    newData[0] = data[0]; // for new allocation
+    for ( var i = 1; i < fitCount - 1; i++) {
+        var tmp = i * springFactor;
+        var before = new Number(Math.floor(tmp)).toFixed();
+        var after = new Number(Math.ceil(tmp)).toFixed();
+        var atPoint = tmp - before;
+        newData[i] = linearInterpolate(data[before], data[after], atPoint);
+    }
+    newData[fitCount - 1] = data[data.length - 1]; // for new allocation
+    return newData;
+};
 
 
 
