@@ -36,21 +36,7 @@ function generateDNA(id, numChromosomes) {
 	// Generate chromosomes based on randomness
 	// This should be the initial DNA strain
 	while(i < numChromosomes) {
-		var rand = Math.random();
-
-		var params = {};
-			params.hertz 	= Math.random() * 15;
-			params.length 	= Math.random() * 20000;
-
-		if(rand < 0.2) {
-			DNA.chromosomes[i] = generateChromosome(i, "sine", params);
-		} else if(rand > 0.2 && rand < 0.4) {
-			DNA.chromosomes[i] = generateChromosome(i, "square", params);
-		} else if(rand > 0.4 && rand < 0.6) {
-			DNA.chromosomes[i] = generateChromosome(i, "saw", params);
-		} else {
-			DNA.chromosomes[i] = generateChromosome(i, "triangle", params);
-		}
+		DNA.chromosomes[i] = generateRandomChromosome(i);
 		i++;
 	}
 
@@ -65,20 +51,38 @@ function generateDNA(id, numChromosomes) {
 	return DNA;
 }
 
+function generateRandomChromosome(id) {
+	var rand = Math.random();
+
+	var params = {};
+		params.hertz 	= Math.random() * 15;
+		params.length 	= Math.random() * 20000;
+
+	var chromosome = {};
+
+	if(rand < 0.2) {
+		chromosome = generateChromosome(id, "sine", params);
+	} else if(rand > 0.2 && rand < 0.4) {
+		chromosome = generateChromosome(id, "square", params);
+	} else if(rand > 0.4 && rand < 0.6) {
+		chromosome = generateChromosome(id, "saw", params);
+	} else {
+		chromosome = generateChromosome(id, "triangle", params);
+	}
+	
+	return chromosome;
+}
+
 function chromosomeSoundData(type, params) {
 	switch(type) {
 		case "sine":
 			return generateSine(params.hertz, params.length);
-			break;
 		case "square":
 			return generateSquare(params.hertz, params.length);
-			break;
 		case "saw":
 			return generateSaw(params.hertz, params.length);
-			break;
 		case "triangle":
 			return generateTriangle(params.hertz, params.length);
-			break;
 	}
 }
 
@@ -86,16 +90,12 @@ function chromosomeColor(type) {
 	switch(type) {
 		case "sine":
 			return "#59ABE3"; // Blue-ish
-			break;
 		case "square":
 			return "#26A65B"; // Green-ish
-			break;
 		case "saw":
 			return "#F4B350"; // Orange-ish
-			break;
 		case "triangle":
 			return "#AEA8D3"; // Purplish
-			break;
 	}
 }
 
@@ -206,17 +206,47 @@ function generateTriangle(hertz, length) {
 	Mutation
 */
 function handleChromosomeArray(array) {
+	var newChromosomeArray = [];
+	var latestID = 0;
+	var DNAID = 0;
 	array.forEach(function(chromosome, iterator) {
 		console.log("Iterator: " + iterator);
-		mutateChromosome(chromosome, 10);
+
+		var newChromosome = mutateChromosome(chromosome, 10);
+			newChromosome.id = iterator;
+			newChromosome.DNAID = parseInt(chromosome.DNAID) + 1;
+
+		newChromosomeArray.push(newChromosome);
+		latestID = iterator;
+		DNAID = newChromosome.DNAID;
 	});
+
+	while(newChromosomeArray.length < 10) {
+		newChromosomeArray.push(generateRandomChromosome(latestID++));
+	}
+
+	var DNA = {};
+		DNA.id 			= DNAID;
+		DNA.chromosomes = newChromosomeArray;
+
+	// Add all of the data together to pass through riffwave
+	var data = [];
+	DNA.chromosomes.forEach(function(entry) {
+		data = data.concat(entry.soundData);
+	});
+	DNA.soundData = data;
+
+	return DNA;
 }
 
 function mutateChromosome(chromosome, mutationRate) {
-
-	chromosome.soundData.forEach(function(data, i) {
-		chromosome.soundData[i] = data + ((Math.random() * mutationRate) - (mutationRate / 2));
+	var newSoundData = [];
+	chromosome.soundData.split(',').forEach(function(data, i) {
+		var randVal = ((Math.random() * mutationRate) - (mutationRate / 2));
+		newSoundData.push(parseInt(data) + randVal);
 	});
+	chromosome.soundData = newSoundData;
+	console.log(chromosome);
 
 	return chromosome;
 }
