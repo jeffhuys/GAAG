@@ -201,3 +201,26 @@ function generateTriangle(hertz, length) {
 
 	return data;
 }
+
+/* 
+	Mutation
+*/
+function handleChromosomeArray(array) {
+	array.forEach(function(chromosome, iterator) {
+		console.log("Iterator: " + iterator);
+		mutateChromosome(chromosome, 10);
+	});
+}
+
+function mutateChromosome(chromosome, mutationRate) {
+
+	chromosome.soundData.forEach(function(data, i) {
+		chromosome.soundData[i] = data + ((Math.random() * mutationRate) - (mutationRate / 2));
+	});
+
+	return chromosome;
+}
+
+
+
+
