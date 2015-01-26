@@ -61,8 +61,6 @@ function generateDNA(id, numChromosomes) {
 
 	DNA.soundData = data;
 
-	localStorage.setItem("DNA-"+ id, DNA);
-
 	return DNA;
 }
 
@@ -307,9 +305,16 @@ function interpolateArray(data, fitCount) {
 // Returns: an array containing [amtDNA] DNA objects
 function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
 	var AllChromosomes = [];
-	DNAStrainArray.forEach(function(DNAObject) {
-		AllChromosomes.push.apply(AllChromosomes, DNAObject.chromosomes);
+	console.dir(DNAStrainArray.length);
+	// DNAStrainArray.forEach(function(DNAObject) {
+	// 	AllChromosomes.concat(DNAObject.chromosomes);
+	// });
+	$.each(DNAStrainArray, function(index, value){
+		$.each(value.chromosomes, function(cindex, cValue){
+			AllChromosomes.push(cValue);
+		});
 	});
+	console.dir(AllChromosomes.length);
 
 	// AllChromosomes now holds all the chromosomes, back to back.
 	// Now, we can create the new DNA objects!
