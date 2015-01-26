@@ -308,8 +308,10 @@ function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
 		return;
 	}
 
+	var highestDNAID = -1;
 	var AllChromosomes = [];
 	$.each(DNAStrainArray, function(index, value){
+		if(value.id > highestDNAID) highestDNAID = value.id;
 		$.each(value.chromosomes, function(cindex, cValue){
 			AllChromosomes.push(cValue);
 		});
@@ -320,7 +322,7 @@ function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
 	// Now, we can create the new DNA objects!
 	var newDNAPopulation = [];
 
-	for (var DNAObjectID = 0; DNAObjectID < amtDNA; DNAObjectID++) {
+	for (var DNAObjectID = highestDNAID; DNAObjectID < amtDNA + highestDNAID; DNAObjectID++) {
 		var newDNAObject 				= {};
 			newDNAObject.id 			= DNAObjectID;
 			newDNAObject.chromosomes 	= [];
