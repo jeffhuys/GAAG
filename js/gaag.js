@@ -298,13 +298,11 @@ function interpolateArray(data, fitCount) {
 // This function takes an array of DNA objects and returns a new array of
 // DNA objects. The amount of DNA objects depends on the second parameter.
 // Accepts: 
-// 		DNAStrainArray: Array of DNA objects
-//		amtDNA:  		How many DNA objects to return
-//		amtChromosomes: How many chromosomes each DNA object contains
+// 		DNAStrainArray: 	Array of DNA objects
+//		amtDNA:  			How many DNA objects to return
+//		amtChromosomes: 	How many chromosomes each DNA object contains
+//		chainProbability: 	Chance of a chain occurring
 // Returns: an array containing [amtDNA] DNA objects
-
-// All chromosomes back to back, pick one, add to array, pick (50% chance next one, 50% random one)
-
 function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
 	var AllChromosomes = [];
 	DNAStrainArray.forEach(function(DNAObject) {
