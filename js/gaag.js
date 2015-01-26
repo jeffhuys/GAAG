@@ -126,7 +126,7 @@ function mateAvg(obj1, obj2) {
 	var arrSize = Math.min(obj1.length, obj2.length);
 
 	for(var i = 0; i < arrSize; i++) {
-		if(obj1[i] != undefined && obj2[i] != undefined) {
+		if(obj1[i] !== undefined && obj2[i] !== undefined) {
 			matedObj[i] = Math.floor((obj1[i] + obj2[i]) / 2);
 		}
 	}
@@ -144,7 +144,7 @@ function mateAvgRandom(obj1, obj2, randomEveryX) {
 	var arrSize = Math.min(obj1.length, obj2.length);
 
 	for(var i = 0; i < arrSize; i++) {
-		if(i % randomEveryX == 0) {
+		if(i % randomEveryX === 0) {
 			var rand = Math.random();
 		}
 
@@ -336,7 +336,7 @@ function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
 		}
 
 		newDNAPopulation.push(newDNAObject);
-	};
+	}
 
 	return newDNAPopulation;
 }
