@@ -318,6 +318,8 @@ function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
 	});
 	console.dir(AllChromosomes.length);
 
+	highestDNAID += amtDNA * 2;
+
 	// AllChromosomes now holds all the chromosomes, back to back.
 	// Now, we can create the new DNA objects!
 	var newDNAPopulation = [];
