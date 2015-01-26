@@ -34,9 +34,12 @@
 	margin-left: 112px !important;
 }
 
-/*.DNA-row
+.DNA
 {
-	overflow-x:scroll;
-    overflow-y:hidden;
-    white-space:nowrap;
-}*/
+	padding-left: 5px;
+}
+
+.panel-body {
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
