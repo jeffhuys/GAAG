@@ -330,14 +330,18 @@ function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
 		for(var chromosomeID = 0; chromosomeID < amtChromosomes; chromosomeID++) {
 			var chromosomeToAdd = {};
 
-			if(Math.random() > chainProbability || (lastChromosomeIndex + 1) > AllChromosomes.length) {
+			if(Math.random() > chainProbability || (lastChromosomeIndex + 1) >= AllChromosomes.length) {
 				// Select a random chromosome, and remember at which index it was
 				var index 			= Math.floor(Math.random() * AllChromosomes.length);
 				chromosomeToAdd 	= AllChromosomes[index];
 				lastChromosomeIndex = index;
 			} else {
 				// Continue a chain
+				if(lastChromosomeIndex == -1) {
+					lastChromosomeIndex = Math.floor(Math.random() * AllChromosomes.length);
+				}
 				chromosomeToAdd = AllChromosomes[++lastChromosomeIndex];
+
 			}
 			newDNAObject.chromosomes.push(chromosomeToAdd);
 		}
