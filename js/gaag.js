@@ -279,7 +279,7 @@ function interpolateArray(data, fitCount) {
     var newData = new Array();
     var springFactor = new Number((data.length - 1) / (fitCount - 1));
     newData[0] = data[0]; // for new allocation
-    for ( var i = 1; i < fitCount - 1; i++) {
+    for(var i = 1; i < fitCount - 1; i++) {
         var tmp = i * springFactor;
         var before = new Number(Math.floor(tmp)).toFixed();
         var after = new Number(Math.ceil(tmp)).toFixed();
@@ -299,19 +299,59 @@ function interpolateArray(data, fitCount) {
 // DNA objects. The amount of DNA objects depends on the second parameter.
 // Accepts: 
 // 		DNAStrainArray: Array of DNA objects
-//		AmtDNA:  		How many DNA objects to return
-// Returns: an array containing [AmtDNA] DNA objects
-function combineDNA(DNAStrainArray, AmtDNA) {
-	
+//		amtDNA:  		How many DNA objects to return
+//		amtChromosomes: How many chromosomes each DNA object contains
+// Returns: an array containing [amtDNA] DNA objects
+
+// All chromosomes back to back, pick one, add to array, pick (50% chance next one, 50% random one)
+
+function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
+	var AllChromosomes = [];
+	DNAStrainArray.forEach(function(DNAObject) {
+		AllChromosomes.push.apply(AllChromosomes, DNAObject.chromosomes);
+	});
+
+	// AllChromosomes now holds all the chromosomes, back to back.
+	// Now, we can create the new DNA objects!
+	var newDNAPopulation = [];
+
+	for (var DNAObjectID = 0; DNAObjectID < amtDNA; DNAObjectID++) {
+		var newDNAObject 				= {};
+			newDNAObject.id 			= DNAObjectID;
+			newDNAObject.chromosomes 	= [];
+
+		// Fill chromosomes
+		var lastChromosomeIndex = -1;
+		for(var chromosomeID = 0; chromosomeID < amtChromosomes; chromosomeID++) {
+			if(Math.random() > chainProbability || (lastChromosomeIndex + 1) > AllChromosomes.length) {
+				// Select a random chromosome, and remember at which index it was
+				var index 			= Math.floor(Math.random() * AllChromosomes.length);
+				var chromosomeToAdd = AllChromosomes[index];
+				lastChromosomeIndex = index;
+			} else {
+				// Continue a chain
+				var chromosomeToAdd = AllChromosomes[++lastChromosomeIndex];
+			}
+			newDNAObject.chromosomes.push(chromosomeToAdd);
+		}
+
+		newDNAPopulation.push(newDNAObject);
+	};
+
+	return newDNAPopulation;
 }
 
 
+/*
+	Anatomy of a DNA object
 
-
-
-
-
-
-
-
-
+	DNA
+		.id
+		.chromosomes [
+			chromosome.id
+			chromosome.color
+			chromosome.type
+			chromosome.params		= params;
+			chromosome.soundData 	= chromosomeSoundData(type, params);
+		]
+*/
