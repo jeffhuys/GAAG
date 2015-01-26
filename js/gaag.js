@@ -291,5 +291,27 @@ function interpolateArray(data, fitCount) {
 };
 
 
+/*
+	DNA Mutation
+*/
+// combineDNA(DNAStrainArray)
+// This function takes an array of DNA objects and returns a new array of
+// DNA objects. The amount of DNA objects depends on the second parameter.
+// Accepts: 
+// 		DNAStrainArray: Array of DNA objects
+//		AmtDNA:  		How many DNA objects to return
+// Returns: an array containing [AmtDNA] DNA objects
+function combineDNA(DNAStrainArray, AmtDNA) {
+	
+}
+
+
+
+
+
+
+
+
+
 
 
