@@ -304,10 +304,9 @@ function interpolateArray(data, fitCount) {
 //		chainProbability: 	Chance of a chain occurring
 // Returns: an array containing [amtDNA] DNA objects
 function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
-	if(DNAStrainArray.length < 1) {
-		return;
-	}
-
+	if(!DNAStrainArray) return;
+	if(DNAStrainArray.length < 1) return;
+	
 	var highestDNAID = -1;
 	var AllChromosomes = [];
 	$.each(DNAStrainArray, function(index, value){
