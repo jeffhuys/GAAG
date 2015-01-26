@@ -352,6 +352,13 @@ function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
 			}
 		}
 
+		// Add all of the data together to pass through riffwave
+		var data = [];
+		newDNAObject.chromosomes.forEach(function(entry) {
+			data = data.concat(entry.soundData);
+		});
+		newDNAObject.soundData = data;
+
 		newDNAPopulation.push(newDNAObject);
 	}
 
