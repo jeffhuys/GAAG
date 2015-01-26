@@ -327,7 +327,7 @@ function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
 
 		// Fill chromosomes
 		var lastChromosomeIndex = -1;
-		for(var chromosomeID = 0; chromosomeID < amtChromosomes; chromosomeID++) {
+		while(newDNAObject.chromosomes.length < amtChromosomes) {
 			var chromosomeToAdd = {};
 
 			if(Math.random() > chainProbability || (lastChromosomeIndex + 1) >= AllChromosomes.length) {
@@ -343,7 +343,9 @@ function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
 				chromosomeToAdd = AllChromosomes[++lastChromosomeIndex];
 
 			}
-			newDNAObject.chromosomes.push(chromosomeToAdd);
+			if(chromosomeToAdd != undefined) {
+				newDNAObject.chromosomes.push(chromosomeToAdd);
+			}
 		}
 
 		newDNAPopulation.push(newDNAObject);
