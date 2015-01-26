@@ -302,11 +302,12 @@ function interpolateArray(data, fitCount) {
 //		amtDNA:  			How many DNA objects to return
 //		amtChromosomes: 	How many chromosomes each DNA object contains
 //		chainProbability: 	Chance of a chain occurring
+//		randomDNACount: 	How many random DNA strains to generate
 // Returns: an array containing [amtDNA] DNA objects
-function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
+function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability, randomDNACount) {
 	if(!DNAStrainArray) return;
 	if(DNAStrainArray.length < 1) return;
-	
+
 	var highestDNAID = -1;
 	var AllChromosomes = [];
 	$.each(DNAStrainArray, function(index, value){
@@ -323,7 +324,7 @@ function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
 	// Now, we can create the new DNA objects!
 	var newDNAPopulation = [];
 
-	for (var DNAObjectID = highestDNAID; DNAObjectID < amtDNA + highestDNAID; DNAObjectID++) {
+	for (var DNAObjectID = highestDNAID; DNAObjectID < (amtDNA + highestDNAID) - randomDNACount; DNAObjectID++) {
 		var newDNAObject 				= {};
 			newDNAObject.id 			= DNAObjectID;
 			newDNAObject.chromosomes 	= [];
@@ -359,6 +360,10 @@ function combineDNA(DNAStrainArray, amtDNA, amtChromosomes, chainProbability) {
 		newDNAObject.soundData = data;
 
 		newDNAPopulation.push(newDNAObject);
+	}
+
+	for(var i = (amtDNA + highestDNAID) - randomDNACount; i < amtDNA + highestDNAID; i++) {
+		newDNAPopulation.push(generateDNA(i, amtChromosomes));
 	}
 
 	return newDNAPopulation;
