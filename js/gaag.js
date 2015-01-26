@@ -61,6 +61,8 @@ function generateDNA(id, numChromosomes) {
 
 	DNA.soundData = data;
 
+	localStorage.setItem("DNA-"+ id, DNA);
+
 	return DNA;
 }
 
